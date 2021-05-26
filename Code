@@ -1,0 +1,48 @@
+#include <LiquidCrystal.h> 
+  
+ #define echo 2 
+ #define trig 3 
+  
+ long duration; 
+ float distance; 
+  
+ LiquidCrystal lcd(13, 12, 11, 10, 9, 8); 
+ void setup() { 
+  
+ pinMode(trig, OUTPUT); 
+ pinMode(echo, INPUT); 
+ Serial.begin(9600); 
+ lcd.begin(16, 2); 
+  
+ } 
+  
+ void loop() { 
+  
+ time_Measurement(); 
+ distance = (float)duration * (0.0343) / 2;  
+ display_distance();  
+  
+ } 
+  
+ void time_Measurement() 
+ { 
+ digitalWrite(trig, LOW); 
+ delayMicroseconds(2); 
+  
+ digitalWrite(trig, HIGH); 
+ delayMicroseconds(10);
+ digitalWrite(trig, LOW); 
+  
+ duration = pulseIn(echo, HIGH); 
+ } 
+ void display_distance() 
+ { 
+ lcd.setCursor(0, 0); 
+ Serial.print("Distance in Cm: "); 
+ Serial.print(distance); 
+ Serial.println(); 
+ lcd.print("Distance in Cm: "); 
+ lcd.setCursor(5, 1); 
+ lcd.print(distance); 
+ delay(500); 
+ }
